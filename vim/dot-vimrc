@@ -1,0 +1,32 @@
+" =============================================================================
+" PORTABLE VIMRC (Core Brain)
+" Works in: Vim, Neovim, and SSH sessions
+" =============================================================================
+
+" --- General Settings ---
+set nocompatible            " Disable Vi-compatibility (enables modern features)
+filetype plugin indent on   " Detect file types and load specific indentation
+syntax on                   " Enable syntax highlighting
+set number                  " Show line numbers
+set relativenumber          " Show relative line numbers (great for jumps like 5j)
+set mouse=a                 " Enable mouse support (just in case)
+set clipboard=unnamedplus   " Use system clipboard (requires +clipboard support)
+
+" --- Search & UI ---
+set ignorecase              " Ignore case in search patterns
+set smartcase               " Override ignorecase if search contains uppercase
+set hlsearch                " Highlight all search results
+set incsearch               " Show search results as you type
+set laststatus=2            " Always show the status line
+set cursorline              " Highlight the line the cursor is on
+set termguicolors           " Enable 24-bit RGB colors (if terminal supports it)
+
+" --- Tab & Indentation ---
+set expandtab               " Convert tabs to spaces
+set shiftwidth=4            " Number of spaces for auto-indent
+set tabstop=4               " Number of spaces a <Tab> counts for
+set smartindent             " Insert indents automatically
+
+" --- The 'Brain' (Custom Mappings) ---
+" Set the Leader key to Space (much easier to hit than \)
+let mapleader = " "

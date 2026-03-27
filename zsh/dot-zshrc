@@ -1,0 +1,87 @@
+# ------------------------------------------------------------------------------
+# HISTORY SETTINGS
+# ------------------------------------------------------------------------------
+HISTFILE=~/.zsh_history      # Where to save your command history
+HISTSIZE=10000               # How many lines to keep in active memory
+SAVEHIST=10000               # How many lines to save to the history file
+
+setopt append_history        # Append to the history file instead of overwriting
+setopt share_history         # Share history across all open terminal tabs
+setopt hist_ignore_dups      # Don't record a command if it was the last one typed
+setopt hist_ignore_space     # Don't record commands starting with a space
+setopt hist_verify           # Show the command from history before running it
+
+# ------------------------------------------------------------------------------
+# VI-MODE (VIM COMMAND LINE)
+# ------------------------------------------------------------------------------
+bindkey -v                   # Enable Vi-Mode
+export KEYTIMEOUT=1          # Make the switch from Insert to Normal mode instant (ESC)
+
+# --- Vi-Mode Backspace & Navigation Fixes ---
+# These make the command line act like a modern editor instead of "Old School" Vi
+bindkey '^?' backward-delete-char       # Allow backspace over everything
+bindkey '^h' backward-delete-char       # Additional backspace mapping
+bindkey '^w' backward-kill-word          # Make Ctrl-W delete words properly
+
+# --- Edit Command in Full Vim ---
+# Hit 'ESC' then 'v' to open your current command in Neovim/Vim
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd 'v' edit-command-line
+
+# --- CURSOR SHAPE FOR VI-MODE ---
+# 5 = Bar (Insert), 2 = Block (Normal)
+
+function zle-keymap-select {
+  if [[ $KEYMAP == vicmd ]] || [[ $1 = 'block' ]]; then
+    echo -ne '\e[2 q' # Solid Block
+  elif [[ $KEYMAP == main ]] || [[ $KEYMAP == viins ]] || [[ $KEYMAP = '' ]] || [[ $1 = 'beam' ]]; then
+    echo -ne '\e[5 q' # Solid Beam (Bar)
+  fi
+}
+zle -N zle-keymap-select
+
+# Reset cursor to Bar when starting a new line
+preexec() { echo -ne '\e[5 q' }
+
+# Ensure the cursor starts as a Bar when the shell loads
+_fix_cursor() { echo -ne '\e[5 q' }
+precmd_functions+=(_fix_cursor)
+
+# ------------------------------------------------------------------------------
+# PROMPT (MINIMAL START)
+# ------------------------------------------------------------------------------
+# %F{blue}%~   -> Current directory in blue (shortened home to ~)
+# %f%#         -> Reset color and show # for root or % for user
+PROMPT='%F{blue}%~%f %# '
+
+# --- NAVIGATION ---
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+
+# --- LS (Better defaults) ---
+# -G adds color, -F adds a / to folders
+alias ls='ls -GF'
+alias ll='ls -alF'
+
+# --- GIT (The 'Big Three') ---
+alias gst="git status"
+alias ga="git add"
+alias gc="git commit -m"
+alias gp="git push"
+alias gl="git log --oneline --graph --decorate"
+
+# --- HOMEBREW SETUP ---
+# This ensures 'brew' and all its installed tools (like gemini) are in your PATH
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# --- AUTOCOMPLETE SETUP ---
+# 1. Tell Zsh where Homebrew keeps its "manuals" for tab-completion
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+# 2. Start the completion engine (only if not already started)
+# If you use 'Oh My Zsh', it might already do this, but it doesn't hurt to have it.
+autoload -Uz compinit
+compinit
+

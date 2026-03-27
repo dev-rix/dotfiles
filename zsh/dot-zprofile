@@ -1,0 +1,10 @@
+# --- HOMEBREW SETUP ---
+# Initialize Brew (specific to Apple Silicon path)
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Hide the "Hints" and tips after installs
+export HOMEBREW_NO_ENV_HINTS=1
+
+# --- SYSTEM SETTINGS ---
+export EDITOR='nvim'
+export LANG="en_US.UTF-8"
