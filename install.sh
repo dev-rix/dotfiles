@@ -34,6 +34,7 @@ brew install git stow
 
 # 6. Clone dotfiles
 DOTFILES_DIR="$HOME/Developer/dotfiles"
+mkdir -p "$HOME/Developer"
 [[ ! -d "$DOTFILES_DIR" ]] && git clone https://github.com/dev-rix/dotfiles.git "$DOTFILES_DIR"
 cd "$DOTFILES_DIR"
 
