@@ -24,21 +24,25 @@ fi
 # 4. Install git and stow
 brew install git stow
 
-# 5. Clone dotfiles
+# 5. Git identity
+read -rp "Git email: " GIT_EMAIL
+git config --global user.email "$GIT_EMAIL"
+
+# 6. Clone dotfiles
 DOTFILES_DIR="$HOME/Developer/dotfiles"
 [[ ! -d "$DOTFILES_DIR" ]] && git clone https://github.com/dev-rix/dotfiles.git "$DOTFILES_DIR"
 cd "$DOTFILES_DIR"
 
-# 6. Install all apps and fonts from Brewfile
+# 7. Install all apps and fonts from Brewfile
 brew bundle --file=./Brewfile
 
-# 7. Prevent stow from folding parent dirs into symlinks
+# 8. Prevent stow from folding parent dirs into symlinks
 mkdir -p ~/.config/nvim ~/.config/wezterm ~/.config/karabiner
 
-# 8. Symlink all configs
-stow -v -R --no-folding --dotfiles -t ~ zsh vim nvim wezterm karabiner
+# 9. Symlink all configs
+stow -v -R --no-folding --dotfiles -t ~ zsh vim nvim wezterm karabiner git
 
-# 9. Trust third-party tap formulas
+# 10. Trust third-party tap formulas
 brew trust --formula nikitabobko/tap/aerospace
 brew trust --formula notwadegrimridge/brew/pingplace
 

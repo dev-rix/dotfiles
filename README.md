@@ -27,6 +27,7 @@ This will:
 | `vim/`      | `~/.vimrc`               |
 | `wezterm/`  | `~/.config/wezterm/`     |
 | `karabiner/`| `~/.config/karabiner/`   |
+| `git/`      | `~/.gitconfig`, `~/.gitignore_global` |
 
 ## Sync
 

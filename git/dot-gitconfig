@@ -1,0 +1,16 @@
+[user]
+	name = Luis Rivera
+	useConfigOnly = true
+[pull]
+	rebase = true
+[rebase]
+	autoStash = true
+[init]
+	defaultBranch = main
+[fetch]
+	prune = true
+[color]
+	ui = auto
+[core]
+	editor = nvim
+	excludesfile = ~/.gitignore_global
