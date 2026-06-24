@@ -48,7 +48,7 @@ brew bundle --file=./Brewfile
 mkdir -p ~/.config/nvim ~/.config/wezterm ~/.config/karabiner ~/.config/gh
 
 # 10. Remove any plain files that would block stow (macOS or prior steps may create these)
-for f in ~/.zshrc ~/.zprofile ~/.vimrc ~/.gitconfig ~/.gitignore_global ~/.aerospace.toml; do
+for f in ~/.zshrc ~/.zprofile ~/.vimrc ~/.gitconfig ~/.gitignore_global ~/.aerospace.toml ~/.config/karabiner/karabiner.json; do
     [[ -f "$f" && ! -L "$f" ]] && rm -f "$f"
 done
 
