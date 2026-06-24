@@ -38,4 +38,8 @@ mkdir -p ~/.config/nvim ~/.config/wezterm ~/.config/karabiner
 # 8. Symlink all configs
 stow -v -R --no-folding --dotfiles -t ~ zsh vim nvim wezterm karabiner
 
+# 9. Trust apps that macOS flags as unverified
+sudo xattr -r -d com.apple.quarantine /Applications/AeroSpace.app 2>/dev/null || true
+sudo xattr -r -d com.apple.quarantine /Applications/PingPlace.app 2>/dev/null || true
+
 echo "Done. Open a new terminal to apply zsh config."
