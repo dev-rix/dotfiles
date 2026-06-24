@@ -85,3 +85,12 @@ FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 autoload -Uz compinit
 compinit
 
+# The "Safety Net" - moves to Mac Trash instead of permanent delete
+rm() { mv -v "$@" ~/.Trash/; }
+
+# The "One-Command" Sync
+# Dumps brew apps, commits everything, and pushes to GitHub
+alias dotsync='cd ~/Developer/dotfiles && brew bundle dump --force --file=./Brewfile && git add . && git commit -m "Sync: $(date)" && git push'
+
+# Quick Stow Refresh
+alias apply="stow -v -R --no-folding --dotfiles -t ~"
