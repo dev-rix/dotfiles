@@ -32,10 +32,15 @@ fi
 # 5. Install git and stow
 brew install git stow
 
-# 6. Clone dotfiles
-DOTFILES_DIR="$HOME/Developer/dotfiles"
-mkdir -p "$HOME/Developer"
-[[ ! -d "$DOTFILES_DIR" ]] && git clone https://github.com/dev-rix/dotfiles.git "$DOTFILES_DIR"
+# 6. Clone dotfiles (skip if script is already running from inside the repo)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
+if [[ -f "$SCRIPT_DIR/Brewfile" ]]; then
+    DOTFILES_DIR="$SCRIPT_DIR"
+else
+    DOTFILES_DIR="$HOME/Developer/dotfiles"
+    mkdir -p "$HOME/Developer"
+    [[ ! -d "$DOTFILES_DIR" ]] && git clone https://github.com/dev-rix/dotfiles.git "$DOTFILES_DIR"
+fi
 cd "$DOTFILES_DIR"
 
 # 7. Trust third-party tap formulas (must happen before brew bundle)
