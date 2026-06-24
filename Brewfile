@@ -54,6 +54,8 @@ cask "cursor"
 cask "cursor-cli"
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
+# Keyboard customizer
+cask "karabiner-elements"
 # Developer platform
 cask "dotnet-sdk"
 # Desktop application for JupyterLab
