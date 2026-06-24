@@ -24,9 +24,18 @@ fi
 # 4. Install git and stow
 brew install git stow
 
-# 5. Git identity
-read -rp "Git email: " GIT_EMAIL
-git config --global user.email "$GIT_EMAIL"
+# 5. SSH key
+if [[ ! -f ~/.ssh/id_ed25519 ]]; then
+    read -rp "Email for SSH key: " SSH_EMAIL
+    ssh-keygen -t ed25519 -C "$SSH_EMAIL" -f ~/.ssh/id_ed25519 -N ""
+    echo ""
+    echo "Add this public key to GitHub before continuing:"
+    echo "https://github.com/settings/keys"
+    echo ""
+    cat ~/.ssh/id_ed25519.pub
+    echo ""
+    read -rp "Press Enter once the key is added to GitHub..."
+fi
 
 # 6. Clone dotfiles
 DOTFILES_DIR="$HOME/Developer/dotfiles"
@@ -39,13 +48,22 @@ brew bundle --file=./Brewfile
 # 8. Prevent stow from folding parent dirs into symlinks
 mkdir -p ~/.config/nvim ~/.config/wezterm ~/.config/karabiner ~/.config/gh
 
-# 9. Symlink all configs
+# 9. Remove any plain files that would block stow (macOS or prior steps may create these)
+for f in ~/.zshrc ~/.zprofile ~/.vimrc ~/.gitconfig ~/.gitignore_global ~/.aerospace.toml; do
+    [[ -f "$f" && ! -L "$f" ]] && rm -f "$f"
+done
+
+# 10. Symlink all configs
 stow -v -R --no-folding --dotfiles -t ~ zsh vim nvim wezterm karabiner git aerospace gh
 
-# 10. macOS preferences
+# 11. Git identity (written to a local-only file so email stays out of the repo)
+read -rp "Git email: " GIT_EMAIL
+echo -e "[user]\n\temail = $GIT_EMAIL" > ~/.gitconfig.local
+
+# 12. macOS preferences
 defaults write com.apple.screencapture location ~/Downloads
 
-# 11. Trust third-party tap formulas
+# 13. Trust third-party tap formulas
 brew trust --formula nikitabobko/tap/aerospace
 brew trust --formula notwadegrimridge/brew/pingplace
 
