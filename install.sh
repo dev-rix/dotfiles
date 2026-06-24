@@ -42,7 +42,10 @@ mkdir -p ~/.config/nvim ~/.config/wezterm ~/.config/karabiner ~/.config/gh
 # 9. Symlink all configs
 stow -v -R --no-folding --dotfiles -t ~ zsh vim nvim wezterm karabiner git aerospace gh
 
-# 10. Trust third-party tap formulas
+# 10. macOS preferences
+defaults write com.apple.screencapture location ~/Downloads
+
+# 11. Trust third-party tap formulas
 brew trust --formula nikitabobko/tap/aerospace
 brew trust --formula notwadegrimridge/brew/pingplace
 
