@@ -28,6 +28,8 @@ This will:
 | `wezterm/`  | `~/.config/wezterm/`     |
 | `karabiner/`| `~/.config/karabiner/`   |
 | `git/`      | `~/.gitconfig`, `~/.gitignore_global` |
+| `aerospace/`| `~/.aerospace.toml`      |
+| `gh/`       | `~/.config/gh/config.yml`|
 
 ## Sync
 

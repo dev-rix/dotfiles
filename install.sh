@@ -37,10 +37,10 @@ cd "$DOTFILES_DIR"
 brew bundle --file=./Brewfile
 
 # 8. Prevent stow from folding parent dirs into symlinks
-mkdir -p ~/.config/nvim ~/.config/wezterm ~/.config/karabiner
+mkdir -p ~/.config/nvim ~/.config/wezterm ~/.config/karabiner ~/.config/gh
 
 # 9. Symlink all configs
-stow -v -R --no-folding --dotfiles -t ~ zsh vim nvim wezterm karabiner git
+stow -v -R --no-folding --dotfiles -t ~ zsh vim nvim wezterm karabiner git aerospace gh
 
 # 10. Trust third-party tap formulas
 brew trust --formula nikitabobko/tap/aerospace
