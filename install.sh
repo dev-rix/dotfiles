@@ -32,16 +32,10 @@ fi
 # 5. Install git and stow
 brew install git stow
 
-# 6. Clone dotfiles (skip if script is already running from inside the repo)
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
-if [[ -f "$SCRIPT_DIR/Brewfile" ]]; then
-    DOTFILES_DIR="$SCRIPT_DIR"
-else
-    DOTFILES_DIR="$HOME/Developer/dotfiles"
-    mkdir -p "$HOME/Developer"
-    [[ ! -d "$DOTFILES_DIR" ]] && git clone https://github.com/dev-rix/dotfiles.git "$DOTFILES_DIR"
-fi
-cd "$DOTFILES_DIR"
+# 6. Clone dotfiles
+DOTFILES_DIR="$HOME/Developer/dotfiles"
+mkdir -p "$HOME/Developer"
+[[ ! -d "$DOTFILES_DIR" ]] && git clone https://github.com/dev-rix/dotfiles.git "$DOTFILES_DIR"
 
 # 7. Trust third-party tap formulas (must happen before brew bundle)
 brew trust --formula nikitabobko/tap/aerospace
@@ -59,6 +53,7 @@ for f in ~/.zshrc ~/.zprofile ~/.vimrc ~/.gitconfig ~/.gitignore_global ~/.aeros
 done
 
 # 11. Symlink all configs
+cd "$DOTFILES_DIR"
 stow -v -R --no-folding --dotfiles -t ~ zsh vim nvim wezterm karabiner git aerospace gh
 
 # 12. Git identity (written to a local-only file so email stays out of the repo)
