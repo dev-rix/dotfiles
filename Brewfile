@@ -54,6 +54,8 @@ cask "cursor"
 cask "cursor-cli"
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
+# Web browser
+cask "google-chrome"
 # Keyboard customizer
 cask "karabiner-elements"
 # Developer platform
@@ -66,6 +68,8 @@ cask "microsoft-teams"
 cask "notwadegrimridge/brew/pingplace"
 # Collaboration platform for API development
 cask "postman"
+# Password manager
+cask "proton-pass"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Binary releases of VS Code without MS branding/telemetry/licensing
