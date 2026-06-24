@@ -21,50 +21,45 @@ fi
 # 3. Load brew into PATH for this session (handles both Apple Silicon and Intel)
 [[ -f /opt/homebrew/bin/brew ]] && eval "$(/opt/homebrew/bin/brew shellenv)" || eval "$(/usr/local/bin/brew shellenv)"
 
-# 4. Install git and stow
-brew install git stow
-
-# 5. SSH key
-if [[ ! -f ~/.ssh/id_ed25519 ]]; then
-    read -rp "Email for SSH key: " SSH_EMAIL
-    ssh-keygen -t ed25519 -C "$SSH_EMAIL" -f ~/.ssh/id_ed25519 -N ""
-    echo ""
-    echo "Add this public key to GitHub before continuing:"
-    echo "https://github.com/settings/keys"
-    echo ""
-    cat ~/.ssh/id_ed25519.pub
-    echo ""
-    read -rp "Press Enter once the key is added to GitHub..."
+# 4. Enable Touch ID for sudo (sudo_local survives macOS updates)
+if ! grep -q "pam_tid" /etc/pam.d/sudo_local 2>/dev/null; then
+    if [[ -f /etc/pam.d/sudo_local.template ]]; then
+        sudo cp /etc/pam.d/sudo_local.template /etc/pam.d/sudo_local
+        sudo sed -i '' 's/#auth/auth/' /etc/pam.d/sudo_local
+    fi
 fi
+
+# 5. Install git and stow
+brew install git stow
 
 # 6. Clone dotfiles
 DOTFILES_DIR="$HOME/Developer/dotfiles"
 [[ ! -d "$DOTFILES_DIR" ]] && git clone https://github.com/dev-rix/dotfiles.git "$DOTFILES_DIR"
 cd "$DOTFILES_DIR"
 
-# 7. Install all apps and fonts from Brewfile
+# 7. Trust third-party tap formulas (must happen before brew bundle)
+brew trust --formula nikitabobko/tap/aerospace
+brew trust --formula notwadegrimridge/brew/pingplace
+
+# 8. Install all apps and fonts from Brewfile
 brew bundle --file=./Brewfile
 
-# 8. Prevent stow from folding parent dirs into symlinks
+# 9. Prevent stow from folding parent dirs into symlinks
 mkdir -p ~/.config/nvim ~/.config/wezterm ~/.config/karabiner ~/.config/gh
 
-# 9. Remove any plain files that would block stow (macOS or prior steps may create these)
+# 10. Remove any plain files that would block stow (macOS or prior steps may create these)
 for f in ~/.zshrc ~/.zprofile ~/.vimrc ~/.gitconfig ~/.gitignore_global ~/.aerospace.toml; do
     [[ -f "$f" && ! -L "$f" ]] && rm -f "$f"
 done
 
-# 10. Symlink all configs
+# 11. Symlink all configs
 stow -v -R --no-folding --dotfiles -t ~ zsh vim nvim wezterm karabiner git aerospace gh
 
-# 11. Git identity (written to a local-only file so email stays out of the repo)
+# 12. Git identity (written to a local-only file so email stays out of the repo)
 read -rp "Git email: " GIT_EMAIL
 echo -e "[user]\n\temail = $GIT_EMAIL" > ~/.gitconfig.local
 
-# 12. macOS preferences
+# 13. macOS preferences
 defaults write com.apple.screencapture location ~/Downloads
-
-# 13. Trust third-party tap formulas
-brew trust --formula nikitabobko/tap/aerospace
-brew trust --formula notwadegrimridge/brew/pingplace
 
 echo "Done. Open a new terminal to apply zsh config."
