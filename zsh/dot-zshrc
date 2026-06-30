@@ -72,6 +72,9 @@ alias gc="git commit -m"
 alias gp="git push"
 alias gl="git log --oneline --graph --decorate"
 
+# --- ollama ---
+alias ollamaup="OLLAMA_FLASH_ATTENTION="1" OLLAMA_KV_CACHE_TYPE="q8_0" /opt/homebrew/opt/ollama/bin/ollama serve"
+
 # --- HOMEBREW SETUP ---
 # This ensures 'brew' and all its installed tools (like gemini) are in your PATH
 eval "$(/opt/homebrew/bin/brew shellenv)"
